@@ -99,8 +99,7 @@ def prob_prog_train(x_train, y_train, start_date, end_date):
 
         y_train_daily = pm.Normal("y_train",
                             mu=alpha * x_train["x"],
-                            sigma=5,
-                            dims="dates")
+                            sigma=5)
 
         for r_i, row in y_train.iterrows():
             value = row["y"]
