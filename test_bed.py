@@ -45,7 +45,8 @@ def split_data(df, y):
     y_test = y[y["Year"] >= year]
     x_train = df[df["Year"] < year]
     x_test = df[df["Year"] >= year]
-    return x_train, x_test, y_train, y_test
+    x = df
+    return x_train, x_test, y_train, y_test, x
 
 def linear_regression_train(x_train, y_train):
     from sklearn.linear_model import LinearRegression
@@ -75,7 +76,7 @@ def get_days_in_month(year, month):
     return dates
 
 
-def prob_prog_train(x_train, y_train, start_date, end_date):
+def prob_prog_train(x, y_train, start_date, end_date):
 
     dates = pd.date_range(start_date, end_date)
     #dates = x_train["Date"].unique()
@@ -96,8 +97,8 @@ def prob_prog_train(x_train, y_train, start_date, end_date):
                             mu=0,
                             sigma=20)
 
-        y_train_daily = pm.Normal("y_train",
-                            mu=alpha * x_train["x"],
+        y = pm.Normal("y",
+                            mu=alpha * x["x"],
                             sigma=5,
                             dates=dates)
 
@@ -113,7 +114,7 @@ def prob_prog_train(x_train, y_train, start_date, end_date):
                 indicies.append(index)
 
             pm.Normal(f"month_{year}_{month}",
-                      mu=sum([y_train_daily[index] for index in indicies]),
+                      mu=sum([y[index] for index in indicies]),
                       sigma=10,
                       observed=value)
 
@@ -124,10 +125,10 @@ if __name__ == "__main__":
     start_date = "2023-01-01"
     end_date = "2024-12-31"
     df, y = create_test_bed(start_date, end_date)
-    x_train, x_test, y_train, y_test = split_data(df, y)
+    x_train, x_test, y_train, y_test, x = split_data(df, y)
     model = linear_regression_train(x_train, y_train)
     y_predict = linear_regression_predict(model, x_test, y_test)
-    prob_prog_train(x_train, y_train, start_date, end_date)
+    prob_prog_train(x, y_train, start_date, end_date)
 
 
 
