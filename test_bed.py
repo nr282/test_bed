@@ -1,4 +1,12 @@
 """
+Test bed to examine if:
+(1) Linear Regression outperforms Probabilistic Programming.
+
+On the basis of this experiment, which we can disclose to the public,
+I can demonstrate that our technology will do better in the Natural
+Gas Estimation that uses linear regression by a certain percentage.
+
+This is a pulbicly available experiment.
 
 
 """
