@@ -6,8 +6,7 @@ On the basis of this experiment, which we can disclose to the public,
 I can demonstrate that our technology will do better in the Natural
 Gas Estimation that uses linear regression by a certain percentage.
 
-This is a pulbicly available experiment.
-
+This is a publicly available experiment.
 
 """
 
@@ -99,7 +98,8 @@ def prob_prog_train(x_train, y_train, start_date, end_date):
 
         y_train_daily = pm.Normal("y_train",
                             mu=alpha * x_train["x"],
-                            sigma=5)
+                            sigma=5,
+                            dates=dates)
 
         for r_i, row in y_train.iterrows():
             value = row["y"]
