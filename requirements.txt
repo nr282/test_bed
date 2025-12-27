@@ -2,3 +2,4 @@ pandas
 numpy
 sklearn
 pymc
+scipy==1.12.0
