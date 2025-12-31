@@ -1,12 +1,13 @@
 """
 Test bed to examine if:
-(1) Linear Regression outperforms Probabilistic Programming.
+(1) Linear Regression is outperformed by Probabilistic Programming.
 
 On the basis of this experiment, which we can disclose to the public,
 I can demonstrate that our technology will do better in the Natural
 Gas Estimation that uses linear regression by a certain percentage.
 
-This is a publicly available experiment.
+This is a publicly available experiment demonstrating Spectral Technologies'
+sophistication.
 
 """
 
@@ -79,8 +80,6 @@ def get_days_in_month(year, month):
 def prob_prog_train(x, y_train, start_date, end_date):
 
     dates = pd.date_range(start_date, end_date)
-    #dates = x_train["Date"].unique()
-
     coords = {
         "dates": list(dates),
     }
@@ -98,9 +97,9 @@ def prob_prog_train(x, y_train, start_date, end_date):
                             sigma=20)
 
         y = pm.Normal("y",
-                            mu=alpha * x["x"],
-                            sigma=5,
-                            dates=dates)
+                    mu=alpha * x["x"],
+                    sigma=5,
+                    dims="dates")
 
         for r_i, row in y_train.iterrows():
             value = row["y"]
@@ -118,17 +117,20 @@ def prob_prog_train(x, y_train, start_date, end_date):
                       sigma=10,
                       observed=value)
 
-        pm.sample(draws=10, tune=10)
-
+        pm.sample(draws=10, tune=10, cores=4)
 
 if __name__ == "__main__":
-    start_date = "2023-01-01"
+    start_date = "2022-01-01"
     end_date = "2024-12-31"
     df, y = create_test_bed(start_date, end_date)
     x_train, x_test, y_train, y_test, x = split_data(df, y)
     model = linear_regression_train(x_train, y_train)
     y_predict = linear_regression_predict(model, x_test, y_test)
     prob_prog_train(x, y_train, start_date, end_date)
+    #Extract y_predict.
+
+
+
 
 
 
